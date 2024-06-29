@@ -49,6 +49,8 @@ class _ScreenSplashState extends State<ScreenSplash> {
           .getPatientsList(context);
       Provider.of<RegisterProvider>(context, listen: false)
           .getBranches(context);
+      Provider.of<RegisterProvider>(context, listen: false)
+          .getTreatment(context);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const ScreenHome()),
       );

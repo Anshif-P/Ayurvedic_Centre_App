@@ -13,12 +13,10 @@ class AuthenticationProvider extends ChangeNotifier {
     final data = await AuthenticationRepo()
         .loginFnc({"username": email, "password": password});
     data.fold((error) {
-      print(error.message);
       CustomSnackBar.showSnackBar(context, error.message);
       isLoading = false;
       notifyListeners();
     }, (response) {
-      print(response);
       SharedPrefModel.instance.insertData('token', response['token']);
       isLoading = false;
       notifyListeners();

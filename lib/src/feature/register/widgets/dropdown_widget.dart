@@ -9,24 +9,32 @@ class DropDownWidget extends StatelessWidget {
   final bool isBranch;
   final bool isHour;
   final bool isMinutes;
+  final bool isTreatment;
   final List<String>? branches;
+  final List<String>? treatments;
   final ValueNotifier<String> selectedBranch = ValueNotifier('Edappali');
   final ValueNotifier<String> selectedState = ValueNotifier('Kerala');
   final ValueNotifier<String> selectedHour = ValueNotifier('10');
   final ValueNotifier<String> selectedMinute = ValueNotifier('0');
+  final ValueNotifier<String> selectedTreatment =
+      ValueNotifier('Herbal Face Pack');
+
+  final Function(String) onPressed;
 
   DropDownWidget({
-    super.key,
+    Key? key,
+    required this.onPressed,
     required this.hintText,
     required this.text,
     this.isLocation = false,
     this.isBranch = false,
     this.isHour = false,
     this.isMinutes = false,
+    this.isTreatment = false,
     this.branches,
-  });
+    this.treatments,
+  }) : super(key: key);
 
-  // final List<String> branches = ['Malappuram', 'Kozhikode', 'Ernakulam'];
   final List<String> hours =
       List<String>.generate(12, (index) => (index + 1).toString());
   final List<String> minutes =
@@ -75,24 +83,25 @@ class DropDownWidget extends StatelessWidget {
       selectedNotifier = selectedHour;
     } else if (isMinutes) {
       selectedNotifier = selectedMinute;
+    } else if (isTreatment) {
+      selectedNotifier = selectedTreatment;
     } else {
-      selectedNotifier = ValueNotifier('');
+      selectedNotifier = selectedTreatment;
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(text, style: AppText.defaultDark),
-        const SizedBox(
-          height: 6,
-        ),
+        const SizedBox(height: 6),
         Container(
           height: 55,
           width: double.maxFinite,
           decoration: BoxDecoration(
-              color: AppColor.extraLightGrey,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColor.grey)),
+            color: AppColor.extraLightGrey,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColor.grey),
+          ),
           child: ValueListenableBuilder(
             valueListenable: selectedNotifier,
             builder: (context, value, child) => DropdownButton<String>(
@@ -116,6 +125,7 @@ class DropDownWidget extends StatelessWidget {
               items: _getDropdownItems(),
               onChanged: (String? newValue) {
                 selectedNotifier.value = newValue!;
+                onPressed(newValue);
               },
             ),
           ),
@@ -130,8 +140,9 @@ class DropDownWidget extends StatelessWidget {
         return DropdownMenuItem<String>(
           value: state,
           child: Text(
-              state.length > 12 ? '${state.substring(0, 12)}..  ' : '$state   ',
-              style: AppText.defaultDark),
+            state.length > 12 ? '${state.substring(0, 12)}..' : state,
+            style: AppText.defaultDark,
+          ),
         );
       }).toList();
     } else if (isBranch) {
@@ -154,6 +165,13 @@ class DropDownWidget extends StatelessWidget {
           value: minute,
           child:
               Text(minute == '0' ? '0:0' : minute, style: AppText.defaultDark),
+        );
+      }).toList();
+    } else if (isTreatment) {
+      return treatments!.map((String treatment) {
+        return DropdownMenuItem<String>(
+          value: treatment,
+          child: Text(treatment, style: AppText.defaultDark),
         );
       }).toList();
     } else {

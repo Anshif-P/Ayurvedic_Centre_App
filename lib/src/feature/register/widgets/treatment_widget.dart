@@ -3,7 +3,15 @@ import 'package:noviindus_machine_task/src/util/constance/colors.dart';
 import 'package:noviindus_machine_task/src/util/constance/text_style.dart';
 
 class TreatmentsWidget extends StatelessWidget {
-  const TreatmentsWidget({super.key});
+  final ValueNotifier<String> treatmentName;
+  final ValueNotifier<int> numberOfMale;
+  final ValueNotifier<int> numberOfFemale;
+
+  const TreatmentsWidget(
+      {super.key,
+      required this.numberOfFemale,
+      required this.numberOfMale,
+      required this.treatmentName});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +43,12 @@ class TreatmentsWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         flex: 7,
-                        child: Text(
-                          'Couple Combo package i',
-                          style: AppText.xLarge,
+                        child: ValueListenableBuilder(
+                          valueListenable: treatmentName,
+                          builder: (context, value, child) => Text(
+                            treatmentName.value,
+                            style: AppText.xLarge,
+                          ),
                         ),
                       ),
                       const Expanded(
@@ -58,17 +69,20 @@ class TreatmentsWidget extends StatelessWidget {
                         style: AppText.defaultGreen,
                       ),
                       const SizedBox(width: 10),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 40,
-                        height: 33,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppColor.grey),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5))),
-                        child: Text(
-                          '2',
-                          style: AppText.defaultGreen,
+                      ValueListenableBuilder(
+                        valueListenable: numberOfMale,
+                        builder: (context, value, child) => Container(
+                          alignment: Alignment.center,
+                          width: 40,
+                          height: 33,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: AppColor.grey),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5))),
+                          child: Text(
+                            numberOfMale.value.toString(),
+                            style: AppText.defaultGreen,
+                          ),
                         ),
                       ),
                       Text(
@@ -76,17 +90,20 @@ class TreatmentsWidget extends StatelessWidget {
                         style: AppText.defaultGreen,
                       ),
                       const SizedBox(width: 10),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 40,
-                        height: 33,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppColor.grey),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5))),
-                        child: Text(
-                          '2',
-                          style: AppText.defaultGreen,
+                      ValueListenableBuilder(
+                        valueListenable: numberOfFemale,
+                        builder: (context, value, child) => Container(
+                          alignment: Alignment.center,
+                          width: 40,
+                          height: 33,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: AppColor.grey),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5))),
+                          child: Text(
+                            numberOfFemale.value.toString(),
+                            style: AppText.defaultGreen,
+                          ),
                         ),
                       ),
                       const Icon(

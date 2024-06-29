@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:noviindus_machine_task/src/feature/register/controller/register_provider.dart';
+import 'package:noviindus_machine_task/src/feature/register/widgets/dropdown_widget.dart';
 import 'package:noviindus_machine_task/src/util/constance/colors.dart';
 import 'package:noviindus_machine_task/src/util/constance/text_style.dart';
-import 'package:noviindus_machine_task/src/util/validation/form_validation.dart';
 import 'package:noviindus_machine_task/src/widgets/buttom_widget.dart';
-import 'package:noviindus_machine_task/src/widgets/text_feild_widget.dart';
+import 'package:provider/provider.dart';
 
 class AlertdialogWidget extends StatelessWidget {
-  const AlertdialogWidget({super.key});
+  final Function(String) onPress;
+  final Function(int) onPressMale;
+  final Function(int) onPressFemale;
+
+  const AlertdialogWidget(
+      {super.key,
+      required this.onPress,
+      required this.onPressFemale,
+      required this.onPressMale});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController treatmentController = TextEditingController();
+    // Initialize ValueNotifiers for male and female counts
+    final ValueNotifier<int> maleCount = ValueNotifier<int>(0);
+    final ValueNotifier<int> femaleCount = ValueNotifier<int>(0);
+
     return AlertDialog(
       surfaceTintColor: Colors.white,
       content: SizedBox(
@@ -18,12 +30,15 @@ class AlertdialogWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextFieldWidget(
-              hintText: 'Choose preferred treatment',
-              controller: treatmentController,
-              validator: (value) => Validations.emtyValidation(value),
-              text: 'choose Treatment',
-              isColorGrey: true,
+            Consumer<RegisterProvider>(
+              builder: (context, value, child) => DropDownWidget(
+                onPressed: onPress,
+                branches: value.branches,
+                hintText: 'Choose preferred treatment',
+                text: 'Choose Treatment',
+                isTreatment: true,
+                treatments: value.treatments,
+              ),
             ),
             const SizedBox(height: 20),
             Text(
@@ -33,116 +48,144 @@ class AlertdialogWidget extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    flex: 3,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(6)),
-                          border: Border.all(color: AppColor.grey),
-                          color: AppColor.extraLightGrey),
-                      child: Text(
-                        'Male',
-                        style: AppText.defaultDark,
-                      ),
-                    )),
-                const SizedBox(
-                  width: 10,
+                  flex: 3,
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(color: AppColor.grey),
+                      color: AppColor.extraLightGrey,
+                    ),
+                    child: Text(
+                      'Male',
+                      style: AppText.defaultDark,
+                    ),
+                  ),
                 ),
+                const SizedBox(width: 10),
                 Expanded(
-                    flex: 4,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColor.primaryColor,
-                          child: Icon(
-                            Icons.remove,
-                            color: Colors.white,
-                          ),
+                  flex: 4,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: AppColor.primaryColor,
+                        child: IconButton(
+                          icon: const Icon(Icons.remove, color: Colors.white),
+                          onPressed: () {
+                            if (maleCount.value > 0) {
+                              maleCount.value--;
+                              onPressMale(maleCount.value);
+                            }
+                          },
                         ),
-                        const SizedBox(width: 10),
-                        Container(
+                      ),
+                      const SizedBox(width: 10),
+                      ValueListenableBuilder<int>(
+                        valueListenable: maleCount,
+                        builder: (context, value, child) => Container(
+                          alignment: Alignment.center,
                           height: 50,
                           width: 50,
                           decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: AppColor.grey),
-                              color: Colors.white),
-                        ),
-                        const SizedBox(width: 10),
-                        const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColor.primaryColor,
-                          child: Icon(
-                            Icons.add,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(6)),
+                            border: Border.all(color: AppColor.grey),
                             color: Colors.white,
                           ),
+                          child: Text(value.toString()),
                         ),
-                      ],
-                    ))
+                      ),
+                      const SizedBox(width: 10),
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: AppColor.primaryColor,
+                        child: IconButton(
+                          icon: const Icon(Icons.add, color: Colors.white),
+                          onPressed: () {
+                            maleCount.value++;
+                            onPressMale(maleCount.value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
-                    flex: 3,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(6)),
-                          border: Border.all(color: AppColor.grey),
-                          color: AppColor.extraLightGrey),
-                      child: Text(
-                        'Female',
-                        style: AppText.defaultDark,
-                      ),
-                    )),
-                const SizedBox(
-                  width: 10,
+                  flex: 3,
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(color: AppColor.grey),
+                      color: AppColor.extraLightGrey,
+                    ),
+                    child: Text(
+                      'Female',
+                      style: AppText.defaultDark,
+                    ),
+                  ),
                 ),
+                const SizedBox(width: 10),
                 Expanded(
-                    flex: 4,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColor.primaryColor,
-                          child: Icon(
-                            Icons.remove,
-                            color: Colors.white,
-                          ),
+                  flex: 4,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: AppColor.primaryColor,
+                        child: IconButton(
+                          icon: const Icon(Icons.remove, color: Colors.white),
+                          onPressed: () {
+                            if (femaleCount.value > 0) {
+                              femaleCount.value--;
+                              onPressFemale(femaleCount.value);
+                            }
+                          },
                         ),
-                        const SizedBox(width: 10),
-                        Container(
+                      ),
+                      const SizedBox(width: 10),
+                      ValueListenableBuilder<int>(
+                        valueListenable: femaleCount,
+                        builder: (context, value, child) => Container(
+                          alignment: Alignment.center,
                           height: 50,
                           width: 50,
                           decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(6)),
-                              border: Border.all(color: AppColor.grey),
-                              color: Colors.white),
-                        ),
-                        const SizedBox(width: 10),
-                        const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColor.primaryColor,
-                          child: Icon(
-                            Icons.add,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(6)),
+                            border: Border.all(color: AppColor.grey),
                             color: Colors.white,
                           ),
+                          child: Text(value.toString()),
                         ),
-                      ],
-                    ))
+                      ),
+                      const SizedBox(width: 10),
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: AppColor.primaryColor,
+                        child: IconButton(
+                          icon: const Icon(Icons.add, color: Colors.white),
+                          onPressed: () {
+                            femaleCount.value++;
+                            onPressFemale(femaleCount.value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -153,7 +196,7 @@ class AlertdialogWidget extends StatelessWidget {
             Navigator.of(context).pop(); // Close the dialog
           },
           text: "Save",
-        )
+        ),
       ],
     );
   }

@@ -3,4 +3,5 @@ class Urls {
   final String login = 'Login';
   final String getPatients = 'PatientList';
   final String getBranches = 'BranchList';
+  final String getTreatments = 'TreatmentList';
 }

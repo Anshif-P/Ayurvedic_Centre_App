@@ -19,7 +19,7 @@ class RegisterPageAppBar extends StatelessWidget {
               InkWell(
                   onTap: () =>
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => ScreenHome(),
+                        builder: (context) => const ScreenHome(),
                       )),
                   child: const Icon(Icons.arrow_back)),
               const Icon(Icons.notifications_none)

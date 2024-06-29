@@ -14,12 +14,9 @@ class PatientModel {
   });
 
   factory PatientModel.fromJson(Map<String, dynamic> json) {
-    print(json); // Debugging to see the structure of incoming JSON
-
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
     DateTime? dateAndTime = DateTime.tryParse(json['date_nd_time'] ?? '');
 
-    // Handle cases where 'patientdetails_set' might be empty or null
     String treatmentName = '';
     if (json['patientdetails_set'] != null &&
         json['patientdetails_set'].isNotEmpty) {

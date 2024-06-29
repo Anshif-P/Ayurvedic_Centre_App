@@ -5,7 +5,7 @@ import 'package:noviindus_machine_task/src/util/constance/colors.dart';
 class PaymentOptionsWidget extends StatelessWidget {
   final ValueNotifier<String?> selectedValueNotifier;
 
-  PaymentOptionsWidget({super.key, required this.selectedValueNotifier});
+  const PaymentOptionsWidget({super.key, required this.selectedValueNotifier});
 
   @override
   Widget build(BuildContext context) {

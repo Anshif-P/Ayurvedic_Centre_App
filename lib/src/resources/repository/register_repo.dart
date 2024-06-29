@@ -5,4 +5,6 @@ import 'package:noviindus_machine_task/src/util/typedef/type_def.dart';
 class RegisterRepository {
   EitherResponse getBranches(String token) async =>
       ApiService.getApi(Urls().baseUrl + Urls().getBranches, token);
+  EitherResponse getTreatment(String token) async =>
+      ApiService.getApi(Urls().baseUrl + Urls().getTreatments, token);
 }

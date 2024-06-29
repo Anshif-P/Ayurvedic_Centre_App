@@ -26,6 +26,14 @@ class ScreenRegister extends StatelessWidget {
   final TextEditingController balanceAmountController = TextEditingController();
   final TextEditingController treatmentDateController = TextEditingController();
   final ValueNotifier<String?> paymentOption = ValueNotifier(null);
+  String selectedBranch = 'Edappali';
+  String selectedLocation = 'Kerala';
+  final ValueNotifier<String> selectedTreatment =
+      ValueNotifier('Herbal Face Pack');
+  final ValueNotifier<String> numberOfMale = ValueNotifier('0');
+  final ValueNotifier<String> numberOfFemale = ValueNotifier('0');
+  String selectedHour = '10';
+  String selectedMinutes = '0.0';
 
   ScreenRegister({super.key});
 
@@ -66,6 +74,9 @@ class ScreenRegister extends StatelessWidget {
                     height: 20,
                   ),
                   DropDownWidget(
+                    onPressed: (value) {
+                      selectedLocation = value;
+                    },
                     hintText: 'Choose your location',
                     text: 'Location',
                     isLocation: true,
@@ -73,6 +84,9 @@ class ScreenRegister extends StatelessWidget {
                   const SizedBox(height: 20),
                   Consumer<RegisterProvider>(
                     builder: (context, value, child) => DropDownWidget(
+                      onPressed: (value) {
+                        selectedBranch = value;
+                      },
                       branches: value.branches,
                       hintText: 'Select the branch',
                       text: 'Branch',
@@ -85,7 +99,11 @@ class ScreenRegister extends StatelessWidget {
                     style: AppText.defaultDark,
                   ),
                   const SizedBox(height: 10),
-                  const TreatmentsWidget(),
+                  TreatmentsWidget(
+                    numberOfFemale: numberOfFemale,
+                    numberOfMale: numberOfMale,
+                    treatmentName: selectedTreatment,
+                  ),
                   const SizedBox(height: 10),
                   ButtonWidget(
                       colorCheck: true,
@@ -93,7 +111,20 @@ class ScreenRegister extends StatelessWidget {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return const AlertdialogWidget();
+                              return AlertdialogWidget(
+                                onPress: (value) {
+                                  print(value);
+                                  selectedTreatment.value = value;
+                                },
+                                onPressFemale: (value) {
+                                  print(value);
+                                  numberOfFemale.value = value.toString();
+                                },
+                                onPressMale: (value) {
+                                  print(value);
+                                  numberOfMale.value = value.toString();
+                                },
+                              );
                             });
                       },
                       text: '+ Add Treatments'),
@@ -137,6 +168,9 @@ class ScreenRegister extends StatelessWidget {
                     children: [
                       Expanded(
                           child: DropDownWidget(
+                        onPressed: (value) {
+                          selectedHour = value;
+                        },
                         hintText: 'Hour',
                         text: 'Treatment Time',
                         isHour: true,
@@ -144,6 +178,9 @@ class ScreenRegister extends StatelessWidget {
                       const SizedBox(width: 10),
                       Expanded(
                           child: DropDownWidget(
+                        onPressed: (value) {
+                          selectedMinutes = value;
+                        },
                         hintText: 'Hour',
                         text: 'Treatment Time',
                         isMinutes: true,
