@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noviindus_machine_task/src/feature/register/widgets/alertdialog.dart';
+import 'package:noviindus_machine_task/src/feature/register/widgets/register_app_bar.dart';
 import 'package:noviindus_machine_task/src/feature/register/widgets/date_picker.dart';
 import 'package:noviindus_machine_task/src/feature/register/widgets/dropdown_widget.dart';
 import 'package:noviindus_machine_task/src/feature/register/widgets/payment_option.dart';
@@ -32,27 +33,7 @@ class ScreenRegister extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(Icons.arrow_back),
-                      Icon(Icons.notifications_none)
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Register',
-                    style: AppText.largeDark,
-                  )
-                ],
-              ),
-            ),
+            const RegisterPageAppBar(),
             const Divider(),
             Expanded(
                 child: Padding(
