@@ -3,6 +3,7 @@ import 'package:noviindus_machine_task/src/feature/authentication/controller/aut
 import 'package:noviindus_machine_task/src/feature/authentication/view/screen_login.dart';
 import 'package:noviindus_machine_task/src/feature/authentication/view/screen_splash.dart';
 import 'package:noviindus_machine_task/src/feature/register/controller/get_patients_provider.dart';
+import 'package:noviindus_machine_task/src/feature/register/controller/register_provider.dart';
 import 'package:noviindus_machine_task/src/resources/local/shared_pref_model.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => PatinetsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => RegisterProvider(),
         )
       ],
       child: const MaterialApp(

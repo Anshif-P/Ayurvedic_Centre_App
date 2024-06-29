@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noviindus_machine_task/src/feature/register/controller/register_provider.dart';
 import 'package:noviindus_machine_task/src/feature/register/widgets/alertdialog.dart';
 import 'package:noviindus_machine_task/src/feature/register/widgets/register_app_bar.dart';
 import 'package:noviindus_machine_task/src/feature/register/widgets/date_picker.dart';
@@ -9,6 +10,7 @@ import 'package:noviindus_machine_task/src/util/constance/text_style.dart';
 import 'package:noviindus_machine_task/src/util/validation/form_validation.dart';
 import 'package:noviindus_machine_task/src/widgets/buttom_widget.dart';
 import 'package:noviindus_machine_task/src/widgets/text_feild_widget.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ScreenRegister extends StatelessWidget {
@@ -69,10 +71,13 @@ class ScreenRegister extends StatelessWidget {
                     isLocation: true,
                   ),
                   const SizedBox(height: 20),
-                  DropDownWidget(
-                    hintText: 'Select the branch',
-                    text: 'Branch',
-                    isBranch: true,
+                  Consumer<RegisterProvider>(
+                    builder: (context, value, child) => DropDownWidget(
+                      branches: value.branches,
+                      hintText: 'Select the branch',
+                      text: 'Branch',
+                      isBranch: true,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Text(

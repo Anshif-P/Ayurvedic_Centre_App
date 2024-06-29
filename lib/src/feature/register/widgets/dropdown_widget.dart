@@ -9,7 +9,8 @@ class DropDownWidget extends StatelessWidget {
   final bool isBranch;
   final bool isHour;
   final bool isMinutes;
-  final ValueNotifier<String> selectedBranch = ValueNotifier('Malappuram');
+  final List<String>? branches;
+  final ValueNotifier<String> selectedBranch = ValueNotifier('Edappali');
   final ValueNotifier<String> selectedState = ValueNotifier('Kerala');
   final ValueNotifier<String> selectedHour = ValueNotifier('10');
   final ValueNotifier<String> selectedMinute = ValueNotifier('0');
@@ -22,9 +23,10 @@ class DropDownWidget extends StatelessWidget {
     this.isBranch = false,
     this.isHour = false,
     this.isMinutes = false,
+    this.branches,
   });
 
-  final List<String> branches = ['Malappuram', 'Kozhikode', 'Ernakulam'];
+  // final List<String> branches = ['Malappuram', 'Kozhikode', 'Ernakulam'];
   final List<String> hours =
       List<String>.generate(12, (index) => (index + 1).toString());
   final List<String> minutes =
@@ -133,7 +135,7 @@ class DropDownWidget extends StatelessWidget {
         );
       }).toList();
     } else if (isBranch) {
-      return branches.map((String branch) {
+      return branches!.map((String branch) {
         return DropdownMenuItem<String>(
           value: branch,
           child: Text(branch, style: AppText.defaultDark),

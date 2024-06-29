@@ -19,8 +19,6 @@ class PatinetsProvider extends ChangeNotifier {
     }, (response) {
       List patient = response['patient'];
       patientList = patient.map((e) => PatientModel.fromJson(e)).toList();
-      print(
-          '-----------------------------------------------------------------------------------------------');
       isLoading = false;
       notifyListeners();
     });

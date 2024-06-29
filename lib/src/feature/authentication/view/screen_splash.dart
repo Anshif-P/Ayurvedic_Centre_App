@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:noviindus_machine_task/src/feature/authentication/view/screen_login.dart';
 import 'package:noviindus_machine_task/src/feature/register/controller/get_patients_provider.dart';
+import 'package:noviindus_machine_task/src/feature/register/controller/register_provider.dart';
 import 'package:noviindus_machine_task/src/feature/register/view/screen_home.dart';
 import 'package:noviindus_machine_task/src/resources/local/shared_pref_model.dart';
 import 'package:noviindus_machine_task/src/util/assets_path/assets.dart';
@@ -42,16 +45,14 @@ class _ScreenSplashState extends State<ScreenSplash> {
     await Future.delayed(const Duration(seconds: 3));
     final token = SharedPrefModel.instance.getData('token');
     if (token != null) {
-      // ignore: use_build_context_synchronously
       Provider.of<PatinetsProvider>(context, listen: false)
           .getPatientsList(context);
-
-      // ignore: use_build_context_synchronously
+      Provider.of<RegisterProvider>(context, listen: false)
+          .getBranches(context);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const ScreenHome()),
       );
     } else {
-      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => ScreenLogin()));
     }
