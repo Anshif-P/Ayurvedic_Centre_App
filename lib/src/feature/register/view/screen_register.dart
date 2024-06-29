@@ -49,14 +49,14 @@ class ScreenRegister extends StatelessWidget {
                   const SizedBox(height: 20),
                   TextFieldWidget(
                     hintText: 'Enter your Whatsapp number',
-                    controller: nameController,
+                    controller: whatsappNumberController,
                     validator: (value) => Validations.emtyValidation(value),
                     text: 'Whatsapp Number',
                   ),
                   const SizedBox(height: 20),
                   TextFieldWidget(
                     hintText: 'Enter your full address',
-                    controller: nameController,
+                    controller: addressController,
                     validator: (value) => Validations.emtyValidation(value),
                     text: 'Address',
                   ),

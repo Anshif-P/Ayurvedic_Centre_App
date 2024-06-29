@@ -74,9 +74,9 @@ class AppText {
       color: AppColor.textPrimary,
       overflow: TextOverflow.ellipsis);
   static TextStyle get defaultGreen => const TextStyle(
-        fontSize: 18,
-        color: AppColor.primaryColor,
-      );
+      fontSize: 18,
+      color: AppColor.primaryColor,
+      overflow: TextOverflow.ellipsis);
 
   static TextStyle get toSmallLineThrough => const TextStyle(
       decoration: TextDecoration.lineThrough,

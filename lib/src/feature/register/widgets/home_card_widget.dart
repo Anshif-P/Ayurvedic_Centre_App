@@ -3,7 +3,19 @@ import 'package:noviindus_machine_task/src/util/constance/colors.dart';
 import 'package:noviindus_machine_task/src/util/constance/text_style.dart';
 
 class HomeCardWidget extends StatelessWidget {
-  const HomeCardWidget({super.key});
+  final String text;
+  final String treatmentName;
+  final String date;
+  final String name;
+  final int index;
+
+  const HomeCardWidget(
+      {super.key,
+      required this.index,
+      required this.date,
+      required this.name,
+      required this.text,
+      required this.treatmentName});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +41,7 @@ class HomeCardWidget extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 5),
                             child: Text(
-                              '1 .',
+                              '${index.toString()} .',
                               style: AppText.xLarge,
                             ),
                           )),
@@ -40,11 +52,11 @@ class HomeCardWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Vikram Singh',
+                              text,
                               style: AppText.xLarge,
                             ),
                             Text(
-                              'Couple Combo Package (Rejuven)',
+                              treatmentName,
                               style: AppText.defaultGreen,
                             ),
                             Row(
@@ -58,7 +70,7 @@ class HomeCardWidget extends StatelessWidget {
                                   width: 6,
                                 ),
                                 Text(
-                                  '31/01/2024',
+                                  date,
                                   style: AppText.defaultGrey,
                                 ),
                                 const SizedBox(
@@ -73,7 +85,7 @@ class HomeCardWidget extends StatelessWidget {
                                   width: 6,
                                 ),
                                 Text(
-                                  'Jithesh',
+                                  name,
                                   style: AppText.defaultGrey,
                                 ),
                               ],

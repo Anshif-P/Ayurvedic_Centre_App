@@ -5,10 +5,7 @@ import 'package:noviindus_machine_task/src/util/typedef/type_def.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {
-  static final Map<String, String> _header = {
-    'Content-Type': 'application/json',
-    'token': ''
-  };
+  static final Map<String, String> _header = {'Authorization': ''};
 
   static final Dio _dio = Dio();
 
@@ -38,7 +35,7 @@ class ApiService {
 
   static EitherResponse getApi(String url, [String? token]) async {
     if (token != null) {
-      _header['token'] = token;
+      _header['Authorization'] = 'Bearer $token';
     }
     try {
       final response = await _dio.get(url, options: Options(headers: _header));
