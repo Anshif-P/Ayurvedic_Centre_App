@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noviindus_machine_task/src/util/constance/colors.dart';
 import 'package:noviindus_machine_task/src/util/constance/text_style.dart';
 import 'package:noviindus_machine_task/src/util/validation/form_validation.dart';
+import 'package:noviindus_machine_task/src/widgets/buttom_widget.dart';
 import 'package:noviindus_machine_task/src/widgets/text_feild_widget.dart';
 
 class ScreenHome extends StatelessWidget {
@@ -12,6 +13,13 @@ class ScreenHome extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHight = MediaQuery.sizeOf(context).height;
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(15),
+        child: SizedBox(
+          height: 55,
+          child: ButtonWidget(onpressFunction: () {}, text: 'Register Now'),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -248,7 +256,7 @@ class ScreenHome extends StatelessWidget {
                       ),
                     );
                   },
-                  separatorBuilder: (context, index) => SizedBox(
+                  separatorBuilder: (context, index) => const SizedBox(
                         height: 20,
                       ),
                   itemCount: 8),

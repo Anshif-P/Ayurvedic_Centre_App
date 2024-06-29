@@ -69,10 +69,10 @@ class AppText {
         color: Colors.white,
       );
   static TextStyle get xLarge => const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-        color: AppColor.textPrimary,
-      );
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: AppColor.textPrimary,
+      overflow: TextOverflow.ellipsis);
   static TextStyle get defaultGreen => const TextStyle(
         fontSize: 18,
         color: AppColor.primaryColor,

@@ -8,6 +8,7 @@ class ButtonWidget extends StatelessWidget {
   final VoidCallback onpressFunction;
   final bool loadingCheck;
   final bool reviewButtonCheck;
+  final bool colorCheck;
   const ButtonWidget({
     super.key,
     this.reviewButtonCheck = false,
@@ -15,6 +16,7 @@ class ButtonWidget extends StatelessWidget {
     required this.onpressFunction,
     required this.text,
     this.loadingCheck = false,
+    this.colorCheck = false,
   });
 
   @override
@@ -31,7 +33,8 @@ class ButtonWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            backgroundColor: MaterialStateProperty.all(AppColor.primaryColor),
+            backgroundColor: MaterialStateProperty.all(
+                colorCheck ? AppColor.lightGreen : AppColor.primaryColor),
           ),
           onPressed: onpressFunction,
           child: loadingCheck
@@ -43,7 +46,8 @@ class ButtonWidget extends StatelessWidget {
                   ))
               : Text(
                   text,
-                  style: AppText.mediumLight,
+                  style:
+                      colorCheck ? AppText.defaultGreen : AppText.defaultLight,
                 ),
         ));
   }
