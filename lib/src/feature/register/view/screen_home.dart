@@ -36,40 +36,53 @@ class ScreenHome extends StatelessWidget {
                 child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Consumer<PatinetsProvider>(
-                  builder: (context, value, child) => value.isLoading
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Transform.scale(
-                                scale: 0.8,
-                                child: const CircularProgressIndicator(
-                                  color: AppColor.primaryColor,
-                                  strokeWidth: 5,
-                                )),
-                          ],
-                        )
-                      : value.patientList.isNotEmpty
-                          ? ListView.separated(
-                              itemCount: value.patientList.length,
-                              itemBuilder: (context, index) {
-                                final data = value.patientList[index];
-                                return HomeCardWidget(
-                                  index: index + 1,
-                                  date: data.date,
-                                  name: data.username,
-                                  text: data.name,
-                                  treatmentName: data.treatmentName,
-                                );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 20,
-                              ),
-                            )
-                          : const Column(
+                  builder: (context, value, child) => RefreshIndicator(
+                      onRefresh: () async {
+                        return Provider.of<PatinetsProvider>(context,
+                                listen: false)
+                            .getPatientsList(context);
+                      },
+                      child: value.isLoading
+                          ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text('No Patients found')],
-                            )),
+                              children: [
+                                Transform.scale(
+                                    scale: 0.8,
+                                    child: const CircularProgressIndicator(
+                                      color: AppColor.primaryColor,
+                                      strokeWidth: 5,
+                                    )),
+                              ],
+                            )
+                          : value.patientList.isNotEmpty
+                              ? ListView.separated(
+                                  itemCount: value.patientList.length,
+                                  itemBuilder: (context, index) {
+                                    final data = value.patientList[index];
+                                    return HomeCardWidget(
+                                      index: index + 1,
+                                      date: data.date,
+                                      name: data.username,
+                                      text: data.name,
+                                      treatmentName: data.treatmentName,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    height: 20,
+                                  ),
+                                )
+                              : SingleChildScrollView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  child: SizedBox(
+                                    height: screenHeight *
+                                        0.5, // Adjust height as needed
+                                    child: const Center(
+                                      child: Text('No Patients found'),
+                                    ),
+                                  ),
+                                ))),
             ))
           ],
         ),

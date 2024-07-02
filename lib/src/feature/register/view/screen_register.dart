@@ -25,15 +25,17 @@ class ScreenRegister extends StatelessWidget {
   final TextEditingController advanceAmountController = TextEditingController();
   final TextEditingController balanceAmountController = TextEditingController();
   final TextEditingController treatmentDateController = TextEditingController();
-  final ValueNotifier<String?> paymentOption = ValueNotifier(null);
+  final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
+  String? selectedPayment;
   String selectedBranch = 'Edappali';
   String selectedLocation = 'Kerala';
   final ValueNotifier<String> selectedTreatment =
       ValueNotifier('Herbal Face Pack');
-  final ValueNotifier<String> numberOfMale = ValueNotifier('0');
-  final ValueNotifier<String> numberOfFemale = ValueNotifier('0');
+  final ValueNotifier<int> numberOfMale = ValueNotifier(0);
+  final ValueNotifier<int> numberOfFemale = ValueNotifier(0);
   String selectedHour = '10';
   String selectedMinutes = '0.0';
+  String? dateTime;
 
   ScreenRegister({super.key});
 
@@ -41,158 +43,187 @@ class ScreenRegister extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            const RegisterPageAppBar(),
-            const Divider(),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              child: ListView(
-                children: [
-                  TextFieldWidget(
-                    hintText: 'Enter your full name',
-                    controller: nameController,
-                    validator: (value) => Validations.emtyValidation(value),
-                    text: 'Name',
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldWidget(
-                    hintText: 'Enter your Whatsapp number',
-                    controller: whatsappNumberController,
-                    validator: (value) => Validations.emtyValidation(value),
-                    text: 'Whatsapp Number',
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldWidget(
-                    hintText: 'Enter your full address',
-                    controller: addressController,
-                    validator: (value) => Validations.emtyValidation(value),
-                    text: 'Address',
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  DropDownWidget(
-                    onPressed: (value) {
-                      selectedLocation = value;
-                    },
-                    hintText: 'Choose your location',
-                    text: 'Location',
-                    isLocation: true,
-                  ),
-                  const SizedBox(height: 20),
-                  Consumer<RegisterProvider>(
-                    builder: (context, value, child) => DropDownWidget(
-                      onPressed: (value) {
-                        selectedBranch = value;
-                      },
-                      branches: value.branches,
-                      hintText: 'Select the branch',
-                      text: 'Branch',
-                      isBranch: true,
+        child: Form(
+          key: registerFormKey,
+          child: Column(
+            children: [
+              const RegisterPageAppBar(),
+              const Divider(),
+              Expanded(
+                  child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                child: ListView(
+                  children: [
+                    TextFieldWidget(
+                        hintText: 'Enter your full name',
+                        controller: nameController,
+                        validator: (value) => Validations.emtyValidation(value),
+                        text: 'Name'),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                        hintText: 'Enter your Whatsapp number',
+                        controller: whatsappNumberController,
+                        validator: (value) => Validations.emtyValidation(value),
+                        text: 'Whatsapp Number'),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                        hintText: 'Enter your full address',
+                        controller: addressController,
+                        validator: (value) => Validations.emtyValidation(value),
+                        text: 'Address'),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Treatments',
-                    style: AppText.defaultDark,
-                  ),
-                  const SizedBox(height: 10),
-                  TreatmentsWidget(
-                    numberOfFemale: numberOfFemale,
-                    numberOfMale: numberOfMale,
-                    treatmentName: selectedTreatment,
-                  ),
-                  const SizedBox(height: 10),
-                  ButtonWidget(
-                      colorCheck: true,
-                      onpressFunction: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertdialogWidget(
-                                onPress: (value) {
-                                  print(value);
-                                  selectedTreatment.value = value;
-                                },
-                                onPressFemale: (value) {
-                                  print(value);
-                                  numberOfFemale.value = value.toString();
-                                },
-                                onPressMale: (value) {
-                                  print(value);
-                                  numberOfMale.value = value.toString();
-                                },
-                              );
-                            });
+                    DropDownWidget(
+                        onPressed: (value) {
+                          selectedLocation = value;
+                        },
+                        hintText: 'Choose your location',
+                        text: 'Location',
+                        isLocation: true),
+                    const SizedBox(height: 20),
+                    Consumer<RegisterProvider>(
+                      builder: (context, value, child) => DropDownWidget(
+                          onPressed: (value) {
+                            selectedBranch = value;
+                          },
+                          branches: value.branches,
+                          hintText: 'Select the branch',
+                          text: 'Branch',
+                          isBranch: true),
+                    ),
+                    const SizedBox(height: 20),
+                    Text('Treatments', style: AppText.defaultDark),
+                    const SizedBox(height: 10),
+                    TreatmentsWidget(
+                        numberOfFemale: numberOfFemale,
+                        numberOfMale: numberOfMale,
+                        treatmentName: selectedTreatment),
+                    const SizedBox(height: 10),
+                    ButtonWidget(
+                        colorCheck: true,
+                        onpressFunction: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertdialogWidget(
+                                  onPress: (value) {
+                                    selectedTreatment.value = value;
+                                  },
+                                  onPressFemale: (value) {
+                                    numberOfFemale.value = value;
+                                  },
+                                  onPressMale: (value) {
+                                    numberOfMale.value = value;
+                                  },
+                                  femaleCount: numberOfFemale,
+                                  maleCount: numberOfMale,
+                                  selectedTreatment: selectedTreatment,
+                                );
+                              });
+                        },
+                        text: '+ Add Treatments'),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                        hintText: '',
+                        controller: totalAmountController,
+                        validator: (value) => Validations.emtyValidation(value),
+                        text: 'Total Amount'),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                        hintText: '',
+                        controller: dicountAmountController,
+                        validator: (value) => Validations.emtyValidation(value),
+                        text: 'Discount Amount'),
+                    const SizedBox(height: 20),
+                    Text('Payment Option', style: AppText.defaultDark),
+                    const SizedBox(height: 10),
+                    PaymentOptionsWidget(
+                      onPress: (value) {
+                        selectedPayment = value;
                       },
-                      text: '+ Add Treatments'),
-                  const SizedBox(height: 20),
-                  TextFieldWidget(
-                    hintText: '',
-                    controller: nameController,
-                    validator: (value) => Validations.emtyValidation(value),
-                    text: 'Total Amount',
-                  ),
-                  const SizedBox(height: 20),
-                  TextFieldWidget(
-                    hintText: '',
-                    controller: nameController,
-                    validator: (value) => Validations.emtyValidation(value),
-                    text: 'Discount Amount',
-                  ),
-                  const SizedBox(height: 20),
-                  Text('Payment Option', style: AppText.defaultDark),
-                  const SizedBox(height: 10),
-                  PaymentOptionsWidget(selectedValueNotifier: paymentOption),
-                  TextFieldWidget(
-                      hintText: '',
-                      controller: advanceAmountController,
-                      validator: (value) => Validations.emtyValidation(value),
-                      text: 'Advance Amount'),
-                  const SizedBox(height: 20),
-                  TextFieldWidget(
-                    hintText: '',
-                    controller: balanceAmountController,
-                    validator: (value) => Validations.emtyValidation(value),
-                    text: 'Balance Amount',
-                  ),
-                  const SizedBox(height: 20),
-                  DatePickerWidget(
-                    hintText: '',
-                    text: 'Treatment Date',
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
+                    ),
+                    TextFieldWidget(
+                        hintText: '',
+                        controller: advanceAmountController,
+                        validator: (value) => Validations.emtyValidation(value),
+                        text: 'Advance Amount'),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                        hintText: '',
+                        controller: balanceAmountController,
+                        validator: (value) => Validations.emtyValidation(value),
+                        text: 'Balance Amount'),
+                    const SizedBox(height: 20),
+                    DatePickerWidget(
+                        hintText: '',
+                        text: 'Treatment Date',
+                        onPressed: (value) {
+                          dateTime = value.toString();
+                        }),
+                    const SizedBox(height: 20),
+                    Row(children: [
                       Expanded(
                           child: DropDownWidget(
-                        onPressed: (value) {
-                          selectedHour = value;
-                        },
-                        hintText: 'Hour',
-                        text: 'Treatment Time',
-                        isHour: true,
-                      )),
+                              onPressed: (value) {
+                                selectedHour = value;
+                              },
+                              hintText: 'Hour',
+                              text: 'Treatment Time',
+                              isHour: true)),
                       const SizedBox(width: 10),
                       Expanded(
                           child: DropDownWidget(
-                        onPressed: (value) {
-                          selectedMinutes = value;
-                        },
-                        hintText: 'Hour',
-                        text: 'Treatment Time',
-                        isMinutes: true,
-                      )),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  ButtonWidget(onpressFunction: () {}, text: 'Save')
-                ],
-              ),
-            ))
-          ],
+                              onPressed: (value) {
+                                selectedMinutes = value;
+                              },
+                              hintText: 'Hour',
+                              text: 'Treatment Time',
+                              isMinutes: true))
+                    ]),
+                    const SizedBox(height: 30),
+                    Consumer<RegisterProvider>(
+                      builder: (context, value, child) => ButtonWidget(
+                          loadingCheck: value.isLoading,
+                          onpressFunction: () {
+                            if (registerFormKey.currentState!.validate() &&
+                                selectedPayment != null) {
+                              Provider.of<RegisterProvider>(context,
+                                      listen: false)
+                                  .registerPatient(
+                                      context: context,
+                                      time: '$selectedHour:$selectedMinutes',
+                                      name: nameController.text,
+                                      whatsappNumber:
+                                          whatsappNumberController.text,
+                                      address: addressController.text,
+                                      location: selectedLocation,
+                                      branch: selectedBranch,
+                                      treatment: selectedTreatment.value,
+                                      numberOfMale: numberOfMale.value,
+                                      numberOfFemale: numberOfFemale.value,
+                                      totalAmount: totalAmountController.text,
+                                      discountAmount:
+                                          dicountAmountController.text,
+                                      advanceAmount:
+                                          advanceAmountController.text,
+                                      balanceAmount:
+                                          balanceAmountController.text,
+                                      treatmentDate: dateTime.toString(),
+                                      paymentOption: selectedPayment!,
+                                      date: dateTime.toString());
+                            } else {
+                              return;
+                            }
+                          },
+                          text: 'Save'),
+                    )
+                  ],
+                ),
+              ))
+            ],
+          ),
         ),
       ),
     );

@@ -7,4 +7,9 @@ class RegisterRepository {
       ApiService.getApi(Urls().baseUrl + Urls().getBranches, token);
   EitherResponse getTreatment(String token) async =>
       ApiService.getApi(Urls().baseUrl + Urls().getTreatments, token);
+
+  EitherResponse registerPatient(
+          String token, Map<String, dynamic> map) async =>
+      ApiService.postFormData(
+          Urls().baseUrl + Urls().registerPatient, map, token);
 }

@@ -10,19 +10,22 @@ class AlertdialogWidget extends StatelessWidget {
   final Function(String) onPress;
   final Function(int) onPressMale;
   final Function(int) onPressFemale;
+  final ValueNotifier<int> maleCount;
+  final ValueNotifier<int> femaleCount;
+  final ValueNotifier<String> selectedTreatment;
 
-  const AlertdialogWidget(
-      {super.key,
-      required this.onPress,
-      required this.onPressFemale,
-      required this.onPressMale});
+  const AlertdialogWidget({
+    super.key,
+    required this.onPress,
+    required this.onPressFemale,
+    required this.onPressMale,
+    required this.maleCount,
+    required this.femaleCount,
+    required this.selectedTreatment,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Initialize ValueNotifiers for male and female counts
-    final ValueNotifier<int> maleCount = ValueNotifier<int>(0);
-    final ValueNotifier<int> femaleCount = ValueNotifier<int>(0);
-
     return AlertDialog(
       surfaceTintColor: Colors.white,
       content: SizedBox(
@@ -32,6 +35,7 @@ class AlertdialogWidget extends StatelessWidget {
           children: [
             Consumer<RegisterProvider>(
               builder: (context, value, child) => DropDownWidget(
+                selectedTreatment: selectedTreatment,
                 onPressed: onPress,
                 branches: value.branches,
                 hintText: 'Choose preferred treatment',

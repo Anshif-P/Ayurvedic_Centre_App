@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:noviindus_machine_task/src/util/constance/text_style.dart';
 import 'package:noviindus_machine_task/src/util/constance/colors.dart';
 
+// ignore: must_be_immutable
 class PaymentOptionsWidget extends StatelessWidget {
-  final ValueNotifier<String?> selectedValueNotifier;
+  void Function(String) onPress;
+  final ValueNotifier<String?> selectedValueNotifier = ValueNotifier(null);
 
-  const PaymentOptionsWidget({super.key, required this.selectedValueNotifier});
+  PaymentOptionsWidget({super.key, required this.onPress});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class PaymentOptionsWidget extends StatelessWidget {
                 groupValue: selectedValue,
                 onChanged: (value) {
                   selectedValueNotifier.value = value;
+                  onPress('Cash');
                 },
                 activeColor: AppColor.primaryColor,
               ),
@@ -40,6 +43,7 @@ class PaymentOptionsWidget extends StatelessWidget {
                 groupValue: selectedValue,
                 onChanged: (value) {
                   selectedValueNotifier.value = value;
+                  onPress('Card');
                 },
                 activeColor: AppColor.primaryColor,
               ),
@@ -55,6 +59,7 @@ class PaymentOptionsWidget extends StatelessWidget {
                 groupValue: selectedValue,
                 onChanged: (value) {
                   selectedValueNotifier.value = value;
+                  onPress('UPI');
                 },
                 activeColor: AppColor.primaryColor,
               ),

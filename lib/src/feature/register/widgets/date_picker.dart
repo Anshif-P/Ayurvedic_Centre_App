@@ -3,12 +3,18 @@ import 'package:noviindus_machine_task/src/util/constance/colors.dart';
 import 'package:noviindus_machine_task/src/util/constance/text_style.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class DatePickerWidget extends StatelessWidget {
   final String text;
   final String hintText;
+  void Function(DateTime) onPressed;
   final ValueNotifier<DateTime?> selectedDate = ValueNotifier<DateTime?>(null);
 
-  DatePickerWidget({super.key, required this.hintText, required this.text});
+  DatePickerWidget(
+      {super.key,
+      required this.hintText,
+      required this.text,
+      required this.onPressed});
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -18,7 +24,8 @@ class DatePickerWidget extends StatelessWidget {
       lastDate: DateTime(2101),
     );
     if (picked != null && picked != selectedDate.value) {
-      selectedDate.value = picked;
+      selectedDate.value = DateTime(picked.year, picked.month, picked.day);
+      onPressed(selectedDate.value!);
     }
   }
 

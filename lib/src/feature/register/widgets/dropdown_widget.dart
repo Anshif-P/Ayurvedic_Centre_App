@@ -16,8 +16,7 @@ class DropDownWidget extends StatelessWidget {
   final ValueNotifier<String> selectedState = ValueNotifier('Kerala');
   final ValueNotifier<String> selectedHour = ValueNotifier('10');
   final ValueNotifier<String> selectedMinute = ValueNotifier('0');
-  final ValueNotifier<String> selectedTreatment =
-      ValueNotifier('Herbal Face Pack');
+  final ValueNotifier<String>? selectedTreatment;
 
   final Function(String) onPressed;
 
@@ -26,6 +25,7 @@ class DropDownWidget extends StatelessWidget {
     required this.onPressed,
     required this.hintText,
     required this.text,
+    this.selectedTreatment,
     this.isLocation = false,
     this.isBranch = false,
     this.isHour = false,
@@ -84,9 +84,9 @@ class DropDownWidget extends StatelessWidget {
     } else if (isMinutes) {
       selectedNotifier = selectedMinute;
     } else if (isTreatment) {
-      selectedNotifier = selectedTreatment;
+      selectedNotifier = selectedTreatment!;
     } else {
-      selectedNotifier = selectedTreatment;
+      selectedNotifier = selectedTreatment!;
     }
 
     return Column(

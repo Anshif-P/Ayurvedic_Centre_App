@@ -5,23 +5,25 @@ import 'package:noviindus_machine_task/src/util/typedef/type_def.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {
-  static final Map<String, String> _header = {'Authorization': ''};
+  static final Map<String, String> _header = {
+    'Content-Type': 'application/json',
+    'Authorization': ''
+  };
 
   static final Dio _dio = Dio();
 
   static EitherResponse postApi(String url, Map<String, dynamic> map,
-      [String? userToken]) async {
-    print(url);
-    print(map);
-    if (userToken != null) {
-      _header['token'] = userToken;
+      [String? token]) async {
+    if (token != null) {
+      _header['Authorization'] = 'Bearer $token';
     }
     final formData = FormData.fromMap(map);
-
     try {
-      final response = await _dio.post(url, data: formData);
+      final response = await _dio.post(url,
+          data: formData, options: Options(headers: _header));
       final fetchedData = _getResponse(response);
       return Right(fetchedData);
+      // ignore: deprecated_member_use
     } on DioError catch (e) {
       if (e.error is SocketException) {
         return Left(InternetException());
@@ -33,6 +35,18 @@ class ApiService {
     }
   }
 
+  static EitherResponse postFormData(String url, Map<String, dynamic> map,
+      [String? token]) async {
+    if (token != null) {
+      _header['Authorization'] = 'Bearer $token';
+    }
+    final formData = FormData.fromMap(map);
+    final response = await _dio.postUri(Uri.parse(url),
+        data: formData, options: Options(headers: _header));
+    final fetchedData = _getResponse(response);
+    return Right(fetchedData);
+  }
+
   static EitherResponse getApi(String url, [String? token]) async {
     if (token != null) {
       _header['Authorization'] = 'Bearer $token';
@@ -41,6 +55,7 @@ class ApiService {
       final response = await _dio.get(url, options: Options(headers: _header));
       final fetchedData = _getResponse(response);
       return Right(fetchedData);
+      // ignore: deprecated_member_use
     } on DioError catch (e) {
       if (e.error is SocketException) {
         return Left(InternetException());
