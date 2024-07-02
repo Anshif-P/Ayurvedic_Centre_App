@@ -62,6 +62,7 @@ class ScreenRegister extends StatelessWidget {
                         text: 'Name'),
                     const SizedBox(height: 20),
                     TextFieldWidget(
+                        isNumberKeyboard: true,
                         hintText: 'Enter your Whatsapp number',
                         controller: whatsappNumberController,
                         validator: (value) => Validations.emtyValidation(value),
@@ -126,12 +127,14 @@ class ScreenRegister extends StatelessWidget {
                         text: '+ Add Treatments'),
                     const SizedBox(height: 20),
                     TextFieldWidget(
+                        isNumberKeyboard: true,
                         hintText: '',
                         controller: totalAmountController,
                         validator: (value) => Validations.emtyValidation(value),
                         text: 'Total Amount'),
                     const SizedBox(height: 20),
                     TextFieldWidget(
+                        isNumberKeyboard: true,
                         hintText: '',
                         controller: dicountAmountController,
                         validator: (value) => Validations.emtyValidation(value),
@@ -145,12 +148,14 @@ class ScreenRegister extends StatelessWidget {
                       },
                     ),
                     TextFieldWidget(
+                        isNumberKeyboard: true,
                         hintText: '',
                         controller: advanceAmountController,
                         validator: (value) => Validations.emtyValidation(value),
                         text: 'Advance Amount'),
                     const SizedBox(height: 20),
                     TextFieldWidget(
+                        isNumberKeyboard: true,
                         hintText: '',
                         controller: balanceAmountController,
                         validator: (value) => Validations.emtyValidation(value),

@@ -11,6 +11,7 @@ class TextFieldWidget extends StatefulWidget {
   final FormFieldValidator validator;
   final bool isColorGrey;
   bool isObscure = true;
+  bool isNumberKeyboard;
 
   TextFieldWidget(
       {super.key,
@@ -20,6 +21,7 @@ class TextFieldWidget extends StatefulWidget {
       this.text,
       this.isObscure = false,
       this.textVisibility = false,
+      this.isNumberKeyboard = false,
       this.isColorGrey = true});
 
   @override
@@ -45,6 +47,9 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           Container(
             color: widget.isColorGrey ? AppColor.extraLightGrey : Colors.white,
             child: TextFormField(
+              keyboardType: widget.isNumberKeyboard
+                  ? TextInputType.number
+                  : TextInputType.text,
               onEditingComplete: () {
                 FocusScope.of(context).nextFocus();
               },
